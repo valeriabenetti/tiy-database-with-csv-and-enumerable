@@ -64,7 +64,7 @@ class Tiydatabase
   def search_person
     puts 'Please input the name of the person you want to search'
     search_person = gets.chomp
-    found_account = @accounts.find { |account| account.name == search_person }
+    found_account = @accounts.find { |account| account.name.include?(search_person) || account.slack_account == search_person || account.github_account == search_person}
     if found_account
       puts "This is #{found_account.name}'s information.
        \nName: #{found_account.name}
