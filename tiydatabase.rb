@@ -16,7 +16,7 @@ class Person
 end
 
 class Tiydatabase
-  attr_reader 'accounts', 'found'
+  attr_reader 'accounts'
 
   def initialize
     @accounts = []
@@ -34,36 +34,37 @@ class Tiydatabase
   def add_person
     print 'What is their name?'
     name = gets.chomp
+    if @accounts.find {|account| account.name == name }
+      puts "Said human exists in the database!"
+    else
+      print 'What is their phone number?'
+      phone_number = gets.chomp.to_i
 
-    print 'What is their phone number?'
-    phone_number = gets.chomp.to_i
+      print 'What is their address?'
+      address = gets.chomp
 
-    print 'What is their address?'
-    address = gets.chomp
+      print 'What is their position at the Iron Yard?'
+      position = gets.chomp
 
-    print 'What is their position at the Iron Yard?'
-    position = gets.chomp
+      print 'What is their salary?'
+      salary = gets.chomp.to_i
 
-    print 'What is their salary?'
-    salary = gets.chomp.to_i
+      print 'What is their Slack username?'
+      slack_account = gets.chomp
 
-    print 'What is their Slack username?'
-    slack_account = gets.chomp
+      print 'What is their GitHub username?'
+      github_account = gets.chomp
 
-    print 'What is their GitHub username?'
-    github_account = gets.chomp
+      account = Person.new(name, phone_number, address, position, salary, slack_account, github_account)
 
-    account = Person.new(name, phone_number, address, position, salary, slack_account, github_account)
-
-    @accounts << account
+      @accounts << account
+    end
   end
 
   def search_person
-
     puts 'Please input the name of the person you want to search'
     search_person = gets.chomp
-
-    found_account = accounts.find { |account| account.name == search_person }
+    found_account = @accounts.find { |account| account.name == search_person }
     if found_account
       puts "This is #{found_account.name}'s information.
        \nName: #{found_account.name}
