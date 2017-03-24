@@ -1,8 +1,34 @@
+require 'csv'
+class Person
+  # Saving the correct data into class
+  attr_reader 'name', 'phone_number', 'address', 'position', 'salary', 'slack_account', 'github_account'
+
+  # Defining name, phone_number, address, position, salary,slack_account, github_account
+  def initialize(name, phone_number, address, position, salary, slack_account, github_account)
+    @name = name
+    @phone_number = phone_number
+    @address = address
+    @position = position
+    @salary = salary
+    @slack_account = slack_account
+    @github_account = github_account
+  end
+end
+
 class Tiydatabase
   attr_reader 'accounts', 'found'
 
   def initialize
     @accounts = []
+    CSV.foreach("employees.csv", headers: true) do |row|
+      name = row["name"]
+      phone_number = row["phone_number"]
+      address = row["address"]
+      position = row["position"]
+      salary = row["salary"]
+      slack_account = row["slack_account"]
+      github_account = row["github_account"]
+    end
   end
 
   def add_person
@@ -33,6 +59,7 @@ class Tiydatabase
   end
 
   def search_person
+
     puts 'Please input the name of the person you want to search'
     search_person = gets.chomp
 
@@ -63,32 +90,17 @@ class Tiydatabase
       puts 'No such account exist'
     end
   end
-end
-class Person
-  # Saving the correct data into class
-  attr_reader 'name', 'phone_number', 'address', 'position', 'salary', 'slack_account', 'github_account'
 
-  # Defining name, phone_number, address, position, salary,slack_account, github_account
-  def initialize(name, phone_number, address, position, salary, slack_account, github_account)
-    @name = name
-    @phone_number = phone_number
-    @address = address
-    @position = position
-    @salary = salary
-    @slack_account = slack_account
-    @github_account = github_account
+  data = Tiydatabase.new
+
+  loop do
+    puts 'Would you like to Add (A), Search (S) or Delete (D) a person from the Iron Yard Database?'
+    selected = gets.chomp.upcase
+
+    data.add_person if selected == 'A'
+
+    data.search_person if selected == 'S'
+
+    data.delete_person if selected == 'D'
   end
-end
-
-data = Tiydatabase.new
-
-loop do
-  puts 'Would you like to Add (A), Search (S) or Delete (D) a person from the Iron Yard Database?'
-  selected = gets.chomp.upcase
-
-  data.add_person if selected == 'A'
-
-  data.search_person if selected == 'S'
-
-  data.delete_person if selected == 'D'
 end
