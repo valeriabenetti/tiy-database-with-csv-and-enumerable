@@ -94,7 +94,7 @@ class Tiydatabase
 
   def report_account
     sorted_accounts = @accounts.sort_by {|account| account.name }
-    puts "The Human Reports: "
+    puts "The Iron Yard Database Reports: "
     sorted_accounts.each do |account|
     puts"This is #{account.name}'s information.
        \nName: #{account.name}
@@ -105,12 +105,27 @@ class Tiydatabase
        \nSlack Account: #{account.slack_account}
        \nGitHub Account: #{account.github_account}"
     puts "The total salary for the Instructors is #{teacher_salary}"
+    puts "The total salary for the Campus Director is #{director_salary}"
+    puts "The total number of students at the Iron Yard is #{total_students}"
+    puts "The total number of Instructor at the Iron Yard is#{total_teachers}"
     end
 
   end
 
   def teacher_salary
     @accounts.select {|account| account.position.include?("Instructor") }.map { |account| account.salary }.sum
+  end
+
+  def director_salary
+    @accounts.select {|account| account.position.include?("Campus Director") }.map {|account| account.salary }.sum
+  end
+
+  def total_students
+    @accounts.select {|account| account.position.include?("Student") }.count
+  end
+
+  def total_teachers
+    @accounts.select {|account| account.position.include?("Instructor") }.count
   end
 end
 data = Tiydatabase.new
