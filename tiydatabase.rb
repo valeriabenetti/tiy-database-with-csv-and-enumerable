@@ -62,7 +62,7 @@ class Tiydatabase
   end
 
   def search_person
-    puts 'Please input the name of the person you want to search'
+    puts 'Please input the name of the person or account information that you are searching for? '
     search_person = gets.chomp
     found_account = @accounts.find { |account| account.name.include?(search_person) || account.slack_account == search_person || account.github_account == search_person}
     if found_account
@@ -92,10 +92,25 @@ class Tiydatabase
     end
   end
 
+  def report_account
+    sorted_accounts = @accounts.sort_by {|account| account.name }
+    puts "The Human Reports: "
+    sorted_accounts.each do |account|
+      puts"This is #{account.name}'s information.
+       \nName: #{account.name}
+       \nPhone: #{account.phone_number}
+       \nAddress: #{account.address}
+       \nPosition: #{account.position}
+       \nSalary: #{account.salary}
+       \nSlack Account: #{account.slack_account}
+       \nGitHub Account: #{account.github_account}"
+    end
+
+  end
   data = Tiydatabase.new
 
   loop do
-    puts 'Would you like to Add (A), Search (S) or Delete (D) a person from the Iron Yard Database?'
+    puts 'Would you like to Add (A), Search (S) or Delete (D) a person or view the Report (R) from the Iron Yard Database?'
     selected = gets.chomp.upcase
 
     data.add_person if selected == 'A'
@@ -103,5 +118,7 @@ class Tiydatabase
     data.search_person if selected == 'S'
 
     data.delete_person if selected == 'D'
+
+    data.report_account if selected == 'R'
   end
 end
