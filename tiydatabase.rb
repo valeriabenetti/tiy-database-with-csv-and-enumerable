@@ -94,20 +94,13 @@ class Tiydatabase
 
   def report_account
     sorted_accounts = @accounts.sort_by {|account| account.name }
-    puts "The Iron Yard Database Reports: "
     sorted_accounts.each do |account|
-    puts"This is #{account.name}'s information.
-       \nName: #{account.name}
-       \nPhone: #{account.phone_number}
-       \nAddress: #{account.address}
-       \nPosition: #{account.position}
-       \nSalary: #{account.salary}
-       \nSlack Account: #{account.slack_account}
-       \nGitHub Account: #{account.github_account}"
-    puts "The total salary for the Instructors is #{teacher_salary}"
-    puts "The total salary for the Campus Director is #{director_salary}"
-    puts "The total number of students at the Iron Yard is #{total_students}"
-    puts "The total number of Instructor at the Iron Yard is#{total_teachers}"
+      puts "The Iron Yard Database Reports: "
+      puts "The total salary for the Instructors is #{teacher_salary}"
+      puts "The total salary for the Campus Director is #{director_salary}"
+      puts "The total number of students at the Iron Yard is #{total_students}"
+      puts "The total number of Instructor at the Iron Yard is#{total_teachers}"
+      puts "The total number of Campus Directors at the Iron Yard is #{total_director}"
     end
 
   end
@@ -126,6 +119,19 @@ class Tiydatabase
 
   def total_teachers
     @accounts.select {|account| account.position.include?("Instructor") }.count
+  end
+
+  def total_director
+    @accounts.select {|account| account.position.include?("Campus Director") }.count
+  end
+
+  def write_csv
+    CSV.open("employees.csv", "w") do |csv|
+      csv << ["name", "phone_number", "address", "position", "salary", "slack_account", "github_account"]
+      @accounts.each do |account|
+        csv << [account.name, account.phone_number, account.address, account.position, account.salary, account.slack_account, account,github_account]
+      end
+    end
   end
 end
 data = Tiydatabase.new
