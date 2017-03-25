@@ -96,7 +96,7 @@ class Tiydatabase
     sorted_accounts = @accounts.sort_by {|account| account.name }
     puts "The Human Reports: "
     sorted_accounts.each do |account|
-      puts"This is #{account.name}'s information.
+    puts"This is #{account.name}'s information.
        \nName: #{account.name}
        \nPhone: #{account.phone_number}
        \nAddress: #{account.address}
@@ -104,21 +104,26 @@ class Tiydatabase
        \nSalary: #{account.salary}
        \nSlack Account: #{account.slack_account}
        \nGitHub Account: #{account.github_account}"
+    puts "The total salary for the Instructors is #{teacher_salary}"
     end
 
   end
-  data = Tiydatabase.new
 
-  loop do
-    puts 'Would you like to Add (A), Search (S) or Delete (D) a person or view the Report (R) from the Iron Yard Database?'
-    selected = gets.chomp.upcase
-
-    data.add_person if selected == 'A'
-
-    data.search_person if selected == 'S'
-
-    data.delete_person if selected == 'D'
-
-    data.report_account if selected == 'R'
+  def teacher_salary
+    @accounts.select {|account| account.position.include?("Instructor") }.map { |account| account.salary }.sum
   end
+end
+data = Tiydatabase.new
+
+loop do
+  puts 'Would you like to Add (A), Search (S) or Delete (D) a person or view the Report (R) from the Iron Yard Database?'
+  selected = gets.chomp.upcase
+
+  data.add_person if selected == 'A'
+
+  data.search_person if selected == 'S'
+
+  data.delete_person if selected == 'D'
+
+  data.report_account if selected == 'R'
 end
