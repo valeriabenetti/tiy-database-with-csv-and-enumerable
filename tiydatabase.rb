@@ -19,7 +19,7 @@ class Tiydatabase
 
   def initialize
     @accounts = []
-    CSV.foreach("employees.csv", headers: true) do |row|
+    CSV.foreach( employees_file, headers: true) do |row|
       name = row["name"]
       phone = row["phone"]
       address = row["address"]
@@ -88,8 +88,8 @@ class Tiydatabase
     puts 'Who are you looking to terminate? '
     name_deleted = gets.chomp
 
-    delete_account = @accounts.delete_if { |account| account.name == name_deleted }
-    if delete_account
+    if @accounts.any? {|account| account.name == name_deleted}
+      @accounts.delete_if { |account| account.name == name_deleted }
       puts 'Account has been exterminated!'
       write_csv
     else
@@ -131,8 +131,12 @@ class Tiydatabase
     @accounts.select {|account| account.position.include?("Campus Director") }.count
   end
 
+  def employees_file
+    return "employees.csv"
+  end
+
   def write_csv
-    CSV.open("employees.csv", "w") do |csv|
+    CSV.open(employees_file, "w") do |csv|
       csv << ["name", "phone", "address", "position", "salary", "slack", "github"]
       @accounts.each do |account|
         csv << [account.name, account.phone, account.address, account.position, account.salary, account.slack, account.github]
@@ -154,6 +158,7 @@ loop do
 
   data.report_account if selected == 'R'
 end
+# If csv info got deleted, comment is at the bottom
 # Gavin,555-1212,1 Main Street,Instructor,1000000,gstark,gstark
 # Jason,555-4242,500 Elm Street,Instructor,2000000,ambethia,ambethia
 # Toni,555-4444,200 Pine Street,Campus Director,3000000,amazing_toni,amazing_toni
